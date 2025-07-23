@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta nombre="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+    class Personaje {
+      constructor(nombre, vida, daño, defensa, velocidad) {
+        this.nombre = nombre;
+        this.vida = vida;
+        this.daño = daño;
+        this.defensa = defensa;
+        this.velocidad = velocidad;
+        this.tipo = "personaje";
+        this.vivo= true;
+      }
+
+      atacar(objetivo) {
+        console.log(`${this.nombre} ataca con su puño a ${objetivo.nombre}`);
+        let defensa = Math.floor(Math.random()*objetivo.defensa)+1
+        if(defensa <= this.daño){
+          objetivo.vida -= this.daño
+          console.log(`ataque exitosa.${objetivo.nombre} tiene ${objetivo.vida} de vida`)
+          if (objetivo.vida <= 0){
+            objetivo.vivo = false
+            console.log(`${objetivo.nombre}a muerto`)
+          }
+        } else {
+          console.log(`ataque fallido`)
+        }
+      }
+      saludar(){
+        console.log(`hola soy ${this.nombre} y soy un ${this.constructor.name}`);
+      }
+    }
+    class Guerrero extends Personaje {
+      constructor(nombre, vida, daño, defensa, velocidad, armas) {
+        super(nombre, vida, defensa, velocidad); 
+        this.armas = armas;
+      }
+      atacar(objetivo){
+        if (Math.random() < 0.33 ){
+          super.atacar(objetivo)
+        }
+        else { 
+          let arma = this.armas[ Math.floor(Math.random()*this.armas.length)]
+          console.log(`${this.nombre}ataca a ${objetivo.nombre}con${arma}`)
+          let dañoExtra = this.daño + 5 
+          let defensa = Math.floor(Math.random()*objetivo.defensa)+1
+          if (defensa <= dañoExtra){
+            objetivo.vida -= dañoExtra
+            console.log(`ataque con arma exitosa. ${objetivo.nombre} tiene ${objetivo.vida} de vida`)
+          if (objetivo.vida <= 0){
+            objetivo.vivo = false
+            console.log(`${objetivo.nombre}a muerto`)
+          }
+          } else console.log(`ataque con arma a fallado`)
+        }
+      } 
+    }
+
+    class Mago extends Personaje {
+      constructor(nombre, vida, daño, defensa, velocidad, hechizos) {
+        super(nombre, vida, defensa, velocidad); 
+        this.hechizos = hechizos;
+      }
+      atacar(objetivo){
+        if (Math.random() < 0.33 ){
+          super.atacar(objetivo)
+        }
+        else { 
+          let hechizo = this.hechizos[ Math.floor(Math.random()*this.hechizos.length)]
+          console.log(`${this.nombre}ataca a ${objetivo.nombre}con${hechizo}`)
+          let dañoExtra = this.daño + 5 
+          let defensa = Math.floor(Math.random()*objetivo.defensa)+1
+          if (defensa <= dañoExtra){
+            objetivo.vida -= dañoExtra
+            console.log(`ataque con hechizo exitosa. ${objetivo.nombre} tiene ${objetivo.vida} de vida`)
+          if (objetivo.vida <= 0){
+            objetivo.vivo = false
+            console.log(`${objetivo.nombre}a muerto`)
+          }
+          } else console.log(`ataque con hechizo a fallado`)
+        }
+      } 
+    }
+
+    class Arquero extends Personaje {
+      constructor(nombre, vida, daño, defensa, velocidad, flechas) {
+        super(nombre, vida, defensa, velocidad); 
+        this.flechas = flechas;
+      }
+      atacar(objetivo){
+        if (Math.random() < 0.33 ){
+          super.atacar(objetivo)
+        }
+        else { 
+          let flecha = this.flechas[ Math.floor(Math.random()*this.flechas.length)]
+          console.log(`${this.nombre}ataca a ${objetivo.nombre}con${flecha}`)
+          let dañoExtra = this.daño + 5 
+          let defensa = Math.floor(Math.random()*objetivo.defensa)+1
+          if (defensa <= dañoExtra){
+            objetivo.vida -= dañoExtra
+            console.log(`ataque con flecha exitosa. ${objetivo.nombre} tiene ${objetivo.vida} de vida`)
+          if (objetivo.vida <= 0){
+            objetivo.vivo = false
+            console.log(`${objetivo.nombre}a muerto`)
+          }
+          } else console.log(`ataque con flecha a fallado`)
+        }
+      } 
+    }
+
+    let personajes = [ 
+      new  Guerrero("fran", 100, 1, 10, 12, ["hacha", "puñal","cuchillo"]), 
+      new  Guerrero("fron", 100, 2, 8, 11, ["espada", "bate","martillo"]),
+      new  Mago("berlyn", 100, 3, 9, 13, ["fuego", "agua","rayos"]),
+      new  Mago("bruno", 100, 2, 11,  14, ["veneno", "tierra"]),
+      new  Arquero("robin", 100, 3, 12, 10, ["flecha de fuego", "flecha de hielo"]),
+    ]
+
+    personajes.forEach(p => p.saludar());
+      let ronda = 1;
+      while (personajes.filter(p => p.vivo).length > 1) {
+        console.log(`Ronda${ronda}`);
+        let vivos = personajes.filter(p => p.vivo);
+        
+        let orden = vivos.map(p => ({
+          personaje: p,
+          turno: Math.floor(Math.random() * p.velocidad) + 1
+        })).sort((a, b) => b.turno - a.turno);
+          orden.forEach(obj => {
+            let atacante = obj.personaje;
+            let posibles = personajes.filter(p => p.vivo && p !== atacante);
+          if (atacante.vivo && posibles.length > 0) {
+            let objetivo = posibles[Math.floor(Math.random() * posibles.length)];
+            atacante.atacar(objetivo);
+          }
+          });
+      ronda++;
+      }
+    let ganador = personajes.find(p => p.vivo);
+      console.log(`${ganador.nombre} ha ganado como ${ganador.tipo}`);
+      
+    </script>
+</body>
+</html>

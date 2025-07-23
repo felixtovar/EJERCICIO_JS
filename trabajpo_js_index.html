@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+    class Empleado {
+      constructor(nombre, apellido, salario) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.salario = salario;
+      }
+      calcularPago(horasExtras, tarifaExtras){
+        return this.salario + horasExtras * tarifaExtras;
+      }
+    }
+
+    class Gerente extends Empleado {
+      constructor(nombre, apellidos, equipos){
+        super(nombre, apellidos, 2000);
+        this.equipos = equipos;
+      }
+      presentar(){
+        console.log(`hola soy el gerente mi nombre es ${this.nombre} ${this.apellido}`);
+        console.log(`este es mi equipo de trabajo ${this.equipos.join(", ")}`);
+      }
+      calcularPago(horasExtras){
+        return super.calcularPago(horasExtras,200)
+      }
+    }
+
+    class Desarrollador extends Empleado {
+      constructor(nombre, apellidos, lenguaje){
+        super(nombre, apellidos, 1500);
+        this.lenguaje = lenguaje;
+      }
+      presentar(){
+        console.log(`hola soy el desarrollador mi nombre es ${this.nombre} ${this.apellido}`);
+        console.log(`este son los lenguaje que manejo ${this.lenguaje.join(", ")}`);
+      }
+      calcularPago(horaExtras){
+        return super.calcularPago(horaExtras,150)
+      }
+    }
+
+    class Diseñador extends Empleado {
+      constructor(nombre, apellidos, tecnologia_diseño){
+        super(nombre, apellidos, 1000);
+        this.tecnologia_diseño = tecnologia_diseño;
+      }
+      presentar(){
+        console.log(`hola soy el diseñador mi nombres es ${this.nombre} ${this.apellido}`);
+        console.log(`mi tecnologia de diseño son ${this.tecnologia_diseño.join(", ")}`);
+      }
+      calcularPago(horaExtras){
+        return super.calcularPago(horaExtras,100)
+      }
+    }
+
+    const gerente = new Gerente("carlos", "arturo", ["jose","luis","pepe"]);
+    const desarrollador = new Desarrollador("angel", "peña", ["python", "javaScript"]);
+    const diseñador = new Diseñador("jose", "hernandez", ["fitma", "illustrator"]);
+    
+    gerente.presentar()
+    console.log(`pago total de 5 horas extras ${gerente.calcularPago(5)}`);
+
+    desarrollador.presentar()
+    console.log(`pago total de 10 horas extras${desarrollador.calcularPago(10)}`);
+
+    diseñador.presentar()
+    console.log(`pago total de 7 horas extras${diseñador.calcularPago(7)}`);
+    </script>
+</body>
+</html>
